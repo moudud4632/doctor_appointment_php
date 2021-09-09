@@ -28,13 +28,25 @@
                     </a>
                 </li>
                 <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=="admin"){ ?>
-                    <li class="nav-item">
-                        <a href="manage-users.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='manage-users'){echo 'active';} ?>">
-                            <i class="nav-icon fas fa-user"></i><p>Manage Users</p>
+                    <li class="nav-item <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-admin' || $_SESSION['active_menu']=='manage-admin'){echo 'menu-open';} ?>">
+                        <a href="#" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-admin' || $_SESSION['active_menu']=='manage-admin'){echo 'active';} ?>">
+                            <i class="nav-icon fas fa-user"></i><p>Admin<i class="fas fa-angle-left right"></i></p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="add-admin.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-admin'){echo 'active';} ?>">
+                                    <i class="far fa-circle nav-icon"></i><p>Add Admin</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="manage-admin.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='manage-admin'){echo 'active';} ?>">
+                                    <i class="far fa-circle nav-icon"></i><p>Manage Admin</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-doctor' || $_SESSION['active_menu']=='manage-doctors' || $_SESSION['active_menu']=='doctor-specilization'){echo 'menu-open';} ?>">
-                        <a href="#" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-doctor' || $_SESSION['active_menu']=='manage-doctors' || $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
+                    <li class="nav-item <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-doctor' || $_SESSION['active_menu']=='manage-doctor' || $_SESSION['active_menu']=='doctor-specilization'){echo 'menu-open';} ?>">
+                        <a href="#" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='add-doctor' || $_SESSION['active_menu']=='manage-doctor' || $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
                             <i class="nav-icon fas fa-user"></i><p>Doctors<i class="fas fa-angle-left right"></i></p>
                         </a>
                         <ul class="nav nav-treeview">
@@ -44,8 +56,8 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="manage-doctors.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='manage-doctors'){echo 'active';} ?>">
-                                    <i class="far fa-circle nav-icon"></i><p>Manage Doctors</p>
+                                <a href="manage-doctor.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='manage-doctor'){echo 'active';} ?>">
+                                    <i class="far fa-circle nav-icon"></i><p>Manage Doctor</p>
                                 </a>
                             </li>
                             <li class="nav-item">
