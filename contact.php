@@ -1,44 +1,43 @@
 <?php
-include_once('hms/include/config.php');
-if(isset($_POST['submit']))
-{
-$name=$_POST['fullname'];
-$email=$_POST['emailid'];
-$mobileno=$_POST['mobileno'];
-$dscrption=$_POST['description'];
-$query=mysqli_query($con,"insert into tblcontactus(fullname,email,contactno,message) value('$name','$email','$mobileno','$dscrption')");
-echo "<script>alert('Your information succesfully submitted');</script>";
-echo "<script>window.location.href ='contact.php'</script>";
-
-}
-
-
+    include_once('include/config.php');
+    include_once('include/session.php');
+    if(isset($_POST['submit'])) {
+        $name=$_POST['fullname'];
+        $email=$_POST['emailid'];
+        $mobileno=$_POST['mobileno'];
+        $description=$_POST['description'];
+        $conn = connection();
+        $query=mysqli_query($conn, "insert into tblcontactus(fullname,email,contactno,message) value('$name','$email','$mobileno','$description')");
+        echo "<script>alert('Information successfully submitted');</script>";
+        echo "<script>window.location.href ='contact.php'</script>";
+    }
 ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>HMS | Contact us</title>
+		<title>Contact</title>
 		<link href="css/style.css" rel="stylesheet" type="text/css"  media="all" />
 		<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
 	</head>
-	<body>
+	<body style="background-color: white;">
 		<!--start-wrap-->
 		
 			<!--start-header-->
 			<div class="header">
-				<div class="wrap">
-				<!--start-logo-->
-				<div class="logo">
-		<a href="index.html" style="font-size: 30px;">Hospital Management system</a> 
-				</div>
+                <div class="wrap" style="width: 100%; background-color: #3391E7;">
+                    <!--start-logo-->
+                    <div class="logo" style="margin: 25px 0 0 22px;">
+                        <a href="index.php" style="font-size: 24px; color: white !important;"><?php echo strtoupper(app('name')) ?></a>
+                    </div>
 				<!--end-logo-->
 				<!--start-top-nav-->
 				<div class="top-nav">
-					<ul>
-						<li><a href="index.html">Home</a></li>
-					
-						<li class="active"><a href="contact.php">contact</a></li>
-					</ul>					
+                    <ul>
+                        <li><a href="index.php">Home</a></li>
+                        <li class="active"><a href="contact.php">Contact</a></li>
+                        <li><a href="#">Blood Bank</a></li>
+                        <li><a href="#">Shop</a></li>
+                    </ul>
 				</div>
 				<div class="clear"> </div>
 				<!--end-top-nav-->
@@ -89,24 +88,8 @@ echo "<script>window.location.href ='contact.php'</script>";
 				    </div>
   				</div>				
 			  </div>
-			  	 <div class="clear"> </div>
 	</div>
-	<div class="clear"> </div>
 			</div>
-	      <div class="clear"> </div>
-		   <div class="footer">
-		   	 <div class="wrap">
-		   	<div class="footer-left">
-		   			<ul>
-						<li><a href="index.html">Home</a></li>
-						
-						<li><a href="contact.php">contact</a></li>
-					</ul>
-		   	</div>
-		  
-		   	<div class="clear"> </div>
-		   </div>
-		   </div>
 		<!--end-wrap-->
 	</body>
 </html>
