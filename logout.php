@@ -7,7 +7,7 @@
     $con = connection();
     mysqli_query($con,"UPDATE userlog  SET logout = '$ldate' WHERE uid = '".$_SESSION['id']."' ORDER BY id DESC LIMIT 1");
     session_unset();
-    //session_destroy();
+    session_destroy();
     $_SESSION['errmsg']="You have successfully logout";
     header('location: login.php');
 ?>

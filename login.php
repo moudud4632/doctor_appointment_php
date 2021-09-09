@@ -22,10 +22,10 @@
             exit();
         }else{
             // For stroing log if user login unsuccessfull
-            $_SESSION['login']=$_POST['username'];
+            $_SESSION['login']='';
             $uip=$_SERVER['REMOTE_ADDR'];
             $status=0;
-            mysqli_query($con,"insert into userlog(username,userip,status) values('".$_SESSION['login']."','$uip','$status')");
+            mysqli_query($con,"insert into userlog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
             $_SESSION['errmsg']="Invalid username or password";
             $extra="login.php";
             $host  = $_SERVER['HTTP_HOST'];
@@ -40,32 +40,29 @@
 <head>
     <title>Login</title>
     <link href="css/style.css" rel="stylesheet" type="text/css"  media="all" />
-    <link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="vendor/themify-icons/themify-icons.min.css">
-    <link href="vendor/animate.css/animate.min.css" rel="stylesheet" media="screen">
-    <link href="vendor/perfect-scrollbar/perfect-scrollbar.min.css" rel="stylesheet" media="screen">
-    <link href="vendor/switchery/switchery.min.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="assets/css/plugins.css">
-    <link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
-<body>
+<body style="background-color: white;">
 <!--start-wrap-->
 
 <!--start-header-->
 <div class="header">
-    <div class="wrap">
+    <div class="wrap" style="width: 100%; background-color: #3391E7;">
         <!--start-logo-->
-        <div class="logo">
-            <a href="index.php" style="font-size: 30px;"><?php echo strtoupper(app('name')) ?></a>
+        <div class="logo" style="margin: 25px 0 0 22px;">
+            <a href="index.php" style="font-size: 22px; color: white !important;"><?php echo strtoupper(app('name')) ?></a>
         </div>
         <!--end-logo-->
         <!--start-top-nav-->
         <div class="top-nav">
-            <ul>
+            <ul style="font-size: 16px;">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="contact.php">Contact</a></li>
                 <li><a href="#">Blood Bank</a></li>
@@ -78,61 +75,72 @@
     <!--end-header-->
 </div>
 <div class="clear"> </div>
-<div style="width: 100%; height: 100%; background-color: white;">
-    <div style="width: 40%; margin: 0 auto; padding-top: 100px;">
-        <div class="box-login">
-            <form class="form-login" method="post">
-                <fieldset>
-                    <legend>Sign in to your account</legend>
-                    <?php if(isset($_SESSION['errmsg']) && $_SESSION['errmsg']!=''){ ?>
-                        <p><span style="color:red;"><?php echo $_SESSION['errmsg']; ?></span></p>
-                    <?php } ?>
-                    <div class="form-group">
-                        <span class="input-icon">
-                            <input type="text" class="form-control" name="username" placeholder="Username">
-                            <i class="fa fa-user"></i>
-                        </span>
-                    </div>
-                    <div class="form-group form-actions">
-                        <span class="input-icon">
-                            <input type="password" class="form-control password" name="password" placeholder="Password">
-                            <i class="fa fa-lock"></i>
-                        </span>
-                        <a href="forgot_password.php">Forgot Password ?</a>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary pull-left" name="submit">Login <i class="fa fa-arrow-circle-right"></i></button>
-                        <div class="text-right pull-right" style="margin-top: 10px;">
-                            Don't have an account yet?
-                            <a href="registration.php">
-                                Create an account
-                            </a>
+<div style="width: 100%; height: 100%;">
+    <div class="login-box" style="margin: 0 auto; margin-top: 20px;">
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Sign in to start your session</p>
+                <?php if(isset($_SESSION['errmsg']) && $_SESSION['errmsg']!=''){ ?>
+                    <p><span style="color:red;"><?php echo $_SESSION['errmsg']; ?></span></p>
+                <?php } ?>
+                <form method="post">
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
                         </div>
+                        <input type="email" class="form-control" name="username" placeholder="Email">
                     </div>
-                </fieldset>
-            </form>
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <input type="password" name="password" class="form-control" placeholder="Password">
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+
+                <p class="mb-1">
+                    <a href="forgot_password.php">I forgot my password</a>
+                </p>
+                <p class="mb-0">
+                    <a href="registration.php" class="text-center">Register as a new patient</a>
+                </p>
+            </div>
+            <!-- /.login-card-body -->
         </div>
     </div>
 </div>
 <!--end-wrap-->
-
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="vendor/modernizr/modernizr.js"></script>
-    <script src="vendor/jquery-cookie/jquery.cookie.js"></script>
-    <script src="vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="vendor/switchery/switchery.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-
-    <script src="assets/js/main.js"></script>
-
-    <script src="assets/js/login.js"></script>
-    <script>
-        jQuery(document).ready(function() {
-            Main.init();
-            Login.init();
-        });
-    </script>
+<script>
+    jQuery(document).ready(function() {
+        Main.init();
+        Login.init();
+    });
+</script>
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
 </body>
 </html>
 

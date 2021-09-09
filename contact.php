@@ -19,16 +19,16 @@
 		<link href="css/style.css" rel="stylesheet" type="text/css"  media="all" />
 		<link href='http://fonts.googleapis.com/css?family=Ropa+Sans' rel='stylesheet' type='text/css'>
 	</head>
-	<body>
+	<body style="background-color: white;">
 		<!--start-wrap-->
 		
 			<!--start-header-->
 			<div class="header">
-				<div class="wrap">
-				<!--start-logo-->
-				<div class="logo">
-		<a href="index.php" style="font-size: 30px;"><?php echo strtoupper(app('name')) ?></a>
-				</div>
+                <div class="wrap" style="width: 100%; background-color: #3391E7;">
+                    <!--start-logo-->
+                    <div class="logo" style="margin: 25px 0 0 22px;">
+                        <a href="index.php" style="font-size: 24px; color: white !important;"><?php echo strtoupper(app('name')) ?></a>
+                    </div>
 				<!--end-logo-->
 				<!--start-top-nav-->
 				<div class="top-nav">

@@ -1,12 +1,7 @@
-<footer>
-    <div class="footer-inner">
-        <div class="pull-left">
-            &copy; <span class="current-year"></span><span class="text-bold text-uppercase"> <?php echo app('name')?></span>. <span>All rights reserved</span>
-        </div>
-        <div class="pull-right">
-            <span>
-                Developed by <a target="_blank" href="<?php echo app('developer_url') ?>"><?php echo app('developer') ?></a>
-            </span>
-        </div>
+<footer class="main-footer">
+    <strong>Copyright &copy;<?php echo date('Y')?> <a href="dashboard.php"><?php echo app('name')?></a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+        <b>Developed by</b> <a target="_blank" href="<?php echo app('developer_url') ?>"><?php echo app('developer') ?></a>
     </div>
 </footer>
