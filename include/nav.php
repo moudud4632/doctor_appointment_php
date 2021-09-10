@@ -34,7 +34,13 @@
                 <i class="fa fa-angle-down"></i>
             </a>
             <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                <a href="edit-profile.php" class="dropdown-item"><i class="fas fa-user mr-2"></i> Profile</a>
+                <?php if($_SESSION['user_details']['role']=='admin'){ ?>
+                    <a href="edit-admin.php?id=<?php echo $_SESSION['user_details']['id']?>&token=profile" class="dropdown-item"><i class="fas fa-user mr-2"></i> Edit Profile</a>
+                <?php }else if($_SESSION['user_details']['role']=='admin'){ ?>
+                    <a href="edit-doctor.php?id=<?php echo $_SESSION['user_details']['id']?>&token=profile" class="dropdown-item"><i class="fas fa-user mr-2"></i> Edit Profile</a>
+                <?php }else{ ?>
+                    <a href="edit-patient.php?id=<?php echo $_SESSION['user_details']['id']?>&token=profile" class="dropdown-item"><i class="fas fa-user mr-2"></i> Edit Profile</a>
+                <?php } ?>
                 <div class="dropdown-divider m-0"></div>
                 <a href="change-password.php" class="dropdown-item"><i class="fas fa-lock mr-2"></i> Change Password</a>
                 <div class="dropdown-divider m-0"></div>

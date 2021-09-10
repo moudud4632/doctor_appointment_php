@@ -5,25 +5,27 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 $_SESSION['user_details']=user_details();
-$_SESSION['active_menu']='manage-admin';
+$_SESSION['active_menu']='change-password';
 $con = connection();
 
 if(isset($_POST['submit']))
 {
-    $id=$_GET['id'];
-    $fullName=$_POST['fullName'];
-    $mobile_number=$_POST['mobile_number'];
-    $city=$_POST['city'];
-    $address=$_POST['address'];
-    $gender=$_POST['gender'];
-    $age=$_POST['age'];
-    $sql=mysqli_query($con,"update users set fullName='$fullName', mobile_number='$mobile_number', city='$city', address='$address', gender='$gender', age='$age' where id='$id'");
-    if($sql)
-    {
-        echo "<script>alert('Admin info updated Successfully');</script>";
-        if(!isset($_GET['token']) && $_GET['token']!='profile'){
-            header('location:manage-admin.php');
+    $old_password=$_POST['old_password'];
+    $new_password=$_POST['password'];
+    $confirm_password=$_POST['confirm_password'];
+    if($new_password==$confirm_password){
+        $query = mysqli_query($con, "select * from users where id='".$_SESSION['user_details']['id']."' AND password='".md5($old_password)."'");
+        if(mysqli_fetch_row($query) > 0){
+            $sql=mysqli_query($con,"update users set password='".md5($new_password)."' where id='".$_SESSION['user_details']['id']."'");
+            if($sql)
+            {
+                echo "<script>alert('Password Successfully updated');</script>";
+            }
+        }else{
+            echo "<script>alert('Old Password not match');</script>";
         }
+    }else{
+        echo "<script>alert('Confirm Password not match');</script>";
     }
 }
 ?>
@@ -33,7 +35,7 @@ if(isset($_POST['submit']))
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Admin</title>
+    <title>Change Password</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -63,12 +65,10 @@ if(isset($_POST['submit']))
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Edit Admin</h1>
+                        <h1 class="m-0">Change Password</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">Edit</li>
-                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage Admin</a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>
@@ -85,45 +85,19 @@ if(isset($_POST['submit']))
                     <!-- /.card-header -->
                     <div class="card-body">
                         <form method="post">
-                            <?php
-                            $eid=$_GET['id'];
-                            $ret=mysqli_query($con,"select * from users where ID='$eid'");
-                            $cnt=1;
-                            while ($row=mysqli_fetch_array($ret)) {
-                                ?>
-                                <div class="form-group">
-                                    <label>Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="fullName" class="form-control"  value="<?php  echo $row['fullName'];?>" required="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Contact Number <span class="text-danger">*</span></label>
-                                    <input type="number" name="mobile_number" class="form-control"  value="<?php  echo $row['mobile_number'];?>" required="" maxlength="11" pattern="[0-9]+">
-                                </div>
-                                <div class="form-group">
-                                    <label>Email <span class="text-danger">*</span></label>
-                                    <input name="email" class="form-control"  value="<?php  echo $row['email'];?>" readonly='true'>
-                                </div>
-                                <div class="form-group">
-                                    <label>City <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="city" value="<?php  echo $row['city'];?>" required="">
-                                </div>
-                                <div class="form-group">
-                                    <label>Address <span class="text-danger">*</span></label>
-                                    <textarea name="address" class="form-control" required=""><?php  echo $row['address'];?></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Gender  <span class="text-danger">*</span></label><br/>
-                                    <label>
-                                        <input type="radio" name="gender" id="gender" value="male" <?php if($row['gender']=="male"){echo 'checked=""';}?>> Male
-                                        <input type="radio" name="gender" id="gender" value="female" <?php if($row['gender']=="female"){echo 'checked=""';}?>> Female
-                                    </label>
-                                </div>
-                                <div class="form-group">
-                                    <label>Age  <span class="text-danger">*</span></label>
-                                    <input type="number" name="age" class="form-control"  value="<?php  echo $row['age'];?>" required="">
-                                </div>
-                            <?php } ?>
-                            <button type="submit" name="submit" id="submit" class="btn btn-o btn-primary">Update</button>
+                            <div class="form-group">
+                                <label>Old Password <span class="text-danger">*</span></label>
+                                <input type="password" name="old_password" class="form-control"  value="" required="">
+                            </div>
+                            <div class="form-group">
+                                <label>New Password <span class="text-danger">*</span></label>
+                                <input type="password" name="password" class="form-control"  value="" required="">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password <span class="text-danger">*</span></label>
+                                <input type="password" name="confirm_password" class="form-control"  value="" required="">
+                            </div>
+                            <button type="submit" name="submit" id="submit" class="btn btn-o btn-primary">Submit</button>
                         </form>
                     </div>
                     <!-- /.card-body -->
@@ -160,7 +134,7 @@ if(isset($_POST['submit']))
 <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- AdminLTE App -->
+<!-- PatientLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>

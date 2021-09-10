@@ -15,7 +15,7 @@
 
     function app($token){
         $data = [
-            'name' => "Doctor's Appointment & Blood Bank",
+            'name' => "Doctors Appointment & Blood Bank",
             'short_name' => "HMS ERP",
             'developer' => "Moudud Ahamed",
             'developer_url' => "https://e3techno.com",
@@ -30,6 +30,8 @@
             $con = connection();
             $result=mysqli_query($con,"SELECT * FROM users WHERE id=".$_SESSION['id']);
             return $data = mysqli_fetch_array($result);
+//            mysqli_close($con);
+//            return $data;
         }
     }
 ?>

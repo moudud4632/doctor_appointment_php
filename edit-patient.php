@@ -21,7 +21,9 @@ if(isset($_POST['submit']))
     if($sql)
     {
         echo "<script>alert('Admin info updated Successfully');</script>";
-        header('location:manage-patient.php');
+        if(!isset($_GET['token']) && $_GET['token']!='profile'){
+            header('location:manage-patient.php');
+        }
     }
 }
 ?>
@@ -61,12 +63,12 @@ if(isset($_POST['submit']))
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">View Patient</h1>
+                        <h1 class="m-0">Edit Patient</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">View</li>
-                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage Patient</a></li>
+                            <li class="breadcrumb-item">Edit</li>
+                            <li class="breadcrumb-item"><a href="manage-patient.php">Manage Patient</a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>

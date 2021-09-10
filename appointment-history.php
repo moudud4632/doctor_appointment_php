@@ -7,10 +7,38 @@ check_login();
 $_SESSION['user_details']=user_details();
 $_SESSION['active_menu']='appointment-history';
 $con = connection();
-if(isset($_GET['del']))
+if(isset($_GET['action']) && $_GET['action']!='' && $_GET['id']!='')
 {
-    mysqli_query($con,"delete from users where id = '".$_GET['id']."'");
+    if($_GET['action']=='delete'){
+        mysqli_query($con,"delete from appointment where id = '".$_GET['id']."'");
+    }else{
+        mysqli_query($con,"update appointment set status='".$_GET['action']."' where id = '".$_GET['id']."'");
+    }
+    header('location: appointment-history.php');
 }
+
+if(isset($_POST['submit']))
+{
+    $id = $_POST['id'];
+    $mobile_number = $_POST['mobile_number'];
+    $meeting_info = $_POST['meeting_info'];
+//    echo "<script>alert('".$meeting_info."');</script>";
+    if($meeting_info!=''){
+        $query=mysqli_query($con,"UPDATE appointment SET meeting_info='$meeting_info', status='link_shared' where id='$id'");
+    }else{
+        $query=mysqli_query($con,"UPDATE appointment SET meeting_info='$meeting_info', status='pending' where id='$id'");
+    }
+    if($query){
+        if($meeting_info!=''){
+            $text = urlencode($meeting_info);
+            file_get_contents("http://66.45.237.70/api.php?username=01795031446&password=A83FCVSX&number=$mobile_number&message=$text");
+        }
+        echo "<script>alert('Meeting information shared via SMS.');</script>";
+    }else{
+        echo "<script>alert('Execution Failed.');</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +46,7 @@ if(isset($_GET['del']))
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Manage Patient</title>
+    <title>Appointment History</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -48,11 +76,11 @@ if(isset($_GET['del']))
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Manage Patient</h1>
+                        <h1 class="m-0">Appointment History</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="manage-patient.php">Manage Patient</a></li>
+                            <li class="breadcrumb-item"><a href="appointment-history.php">Appointment History</a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>
@@ -80,10 +108,11 @@ if(isset($_GET['del']))
                                 <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='doctor'){ ?>
                                     <th>Patient</th>
                                     <th>Patient Phone</th>
-                                    <th>Consultancy Fee</th>
+                                    <th>Fees</th>
                                 <?php } ?>
                                 <th>Symptoms</th>
-                                <th>Appointment</th>
+                                <th>Date</th>
+                                <th>Slot</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -108,9 +137,9 @@ if(isset($_GET['del']))
                                             $doctor=mysqli_query($con,"select * from users where id='$doctor_id'");
                                             $doctor_row=mysqli_fetch_array($doctor);
                                         ?>
-                                        <td><?php echo $doctor_row['fullName']; ?></td>
-                                        <td><?php echo $doctor_row['mobile_number']; ?></td>
-                                        <td><?php echo $row['doctor_specialization']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $doctor_row['fullName']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $doctor_row['mobile_number']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $row['doctor_specialization']; ?></td>
                                     <?php } ?>
                                     <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='doctor'){ ?>
                                         <?php
@@ -118,20 +147,25 @@ if(isset($_GET['del']))
                                         $patient=mysqli_query($con,"select * from users where id='$patient_id'");
                                         $patient_row=mysqli_fetch_array($patient);
                                         ?>
-                                        <td><?php echo $patient_row['fullName']; ?></td>
-                                        <td><?php echo $patient_row['mobile_number']; ?></td>
-                                        <td><?php echo $row['fees']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $patient_row['fullName']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $patient_row['mobile_number']; ?></td>
+                                        <td class="p-0 m-0"><?php echo $row['fees']; ?></td>
                                     <?php } ?>
-                                    <td><?php echo $row['symptoms']; ?></td>
-                                    <td><?php echo $row['appointment_datetime']; ?></td>
-                                    <td><?php echo ucfirst($row['status']); ?></td>
+                                    <td class="p-0 m-0"><?php echo $row['symptoms']; ?></td>
+                                    <td class="p-0 m-0"><?php echo $row['appointment_date']; ?></td>
+                                    <td class="p-0 m-0"><?php echo $row['appointment_time_slot']; ?></td>
+                                    <td class="p-0 m-0"><?php if($row['status']=='pending'){echo '<span class="badge badge-warning">Pending</span>';}else if($row['status']=='link_shared'){ echo '<span class="badge badge-primary">Schedule Confirmed</span>';}else if($row['status']=='done'){ echo '<span class="badge badge-success">Done</span>';}else{ echo '<span class="badge badge-danger">Canceled</span>';}; ?></td>
                                     <td class="p-0 m-0">
-                                        <a href="view.php?id=<?php echo $row['id']?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                                        <a href="edit-patient.php?id=<?php echo $row['id']?>" onClick="return confirm('Are you sure you want to edit?')" class="btn btn-primary btn-sm"><i class="fa fa-user-edit"></i></a>
-                                        <a href="manage-patient.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                        <?php if($row['status']=='pending' || $row['status']=='link_shared'){ ?>
+                                            <?php if($_SESSION['user_details']['role']=='doctor'){ ?>
+                                                <a href="appointment-history.php?id=<?php echo $row['id']?>&action=done" onClick="return confirm('Are you sure you want to complete?')" class="btn btn-success btn-sm"><i class="fa fa-check"></i></a>
+                                                <a href="javascript:void(0)" onClick="linkShared('<?php echo $row['id']?>')" class="btn btn-primary btn-sm"><i class="fa fa-paper-plane"></i></a>
+                                            <?php } ?>
+                                            <a href="appointment-history.php?id=<?php echo $row['id']?>&action=canceled" onClick="return confirm('Are you sure you want to canceled?')" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>
+                                            <a href="appointment-history.php?id=<?php echo $row['id']?>&del=delete" onClick="return confirm('Are you sure you want to delete?')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                        <?php } ?>
                                     </td>
                                 </tr>
-
                                 <?php } ?>
                             </tbody>
                         </table>
@@ -150,6 +184,38 @@ if(isset($_GET['del']))
         <!-- Control sidebar content goes here -->
     </aside>
     <!-- /.control-sidebar -->
+
+    <div class="modal" id="link_shared" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Share Link With Patient</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST">
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <lebel class="text-bold" style="width: 100%;">Patient Mobile Number</lebel>
+                            <br/>
+                            <input class="form-control" name="mobile_number" id="mobile_number" placeholder="Patient Mobile Number...." readonly style="100%;"/>
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <lebel class="text-bold">SMS Body</lebel>
+                            <textarea class="form-control" name="meeting_info" id="meeting_info" placeholder="Enter Meeting Links...." style="width: 100%; height: 200px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="aId" name="id" value="" required/>
+                        <button type="submit" name="submit" class="btn btn-success">Save & Send Via SMS</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- ./wrapper -->
 
@@ -180,6 +246,23 @@ if(isset($_GET['del']))
     $(function () {
         $('#datatable').DataTable();
     });
+
+    function linkShared(id){
+        if(id>0){
+            $.ajax({
+                type: "POST",
+                url: "get-appointment-data.php",
+                data:'id='+id,
+                dataType:'JSON',
+                success: function(data){
+                    $('#mobile_number').val(data.mobile_number);
+                    $('#meeting_info').text(data.meeting_info);
+                    $('#aId').val(id);
+                    $('#link_shared').modal('show');
+                }
+            });
+        }
+    }
 </script>
 </body>
 </html>

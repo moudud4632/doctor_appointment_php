@@ -24,7 +24,9 @@ if(isset($_POST['submit']))
     if($sql)
     {
         echo "<script>alert('Doctor info updated Successfully');</script>";
-        header('location:manage-doctor.php');
+        if(!isset($_GET['token']) && $_GET['token']!='profile'){
+            header('location:manage-doctor.php');
+        }
     }
 }
 ?>
@@ -34,7 +36,7 @@ if(isset($_POST['submit']))
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Admin</title>
+    <title>Edit Doctor</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -64,12 +66,12 @@ if(isset($_POST['submit']))
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">View Admin</h1>
+                        <h1 class="m-0">Edit Doctor</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">View</li>
-                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage Admin</a></li>
+                            <li class="breadcrumb-item">Edit</li>
+                            <li class="breadcrumb-item"><a href="manage-doctor.php">Manage Doctor</a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>
