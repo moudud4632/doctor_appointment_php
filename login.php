@@ -16,7 +16,7 @@
             $uip=$_SERVER['REMOTE_ADDR'];
             $status=1;
             // For stroing log if user login successfull
-            $log=mysqli_query($con,"insert into userlog(uid,username,userip,status) values('".$_SESSION['id']."','".$_SESSION['login']."','$uip','$status')");
+//            $log=mysqli_query($con,"insert into userlog(uid,username,userip,status) values('".$_SESSION['id']."','".$_SESSION['login']."','$uip','$status')");
             $uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
             header("location:http://$host$uri/$extra");
             exit();
@@ -25,7 +25,7 @@
             $_SESSION['login']='';
             $uip=$_SERVER['REMOTE_ADDR'];
             $status=0;
-            mysqli_query($con,"insert into userlog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
+//            mysqli_query($con,"insert into userlog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
             $_SESSION['errmsg']="Invalid username or password";
             $extra="login.php";
             $host  = $_SERVER['HTTP_HOST'];
