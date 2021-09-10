@@ -97,11 +97,13 @@
                         <i class="nav-icon fas fa-file"></i><p>Appointment<i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="book-appointment.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='book-appointment'){echo 'active';} ?>">
-                                <i class="far fa-circle nav-icon"></i><p>Book Appointment</p>
-                            </a>
-                        </li>
+                        <?php if(isset($_SESSION['user_details']) && $_SESSION['user_details']['role']=='patient'){ ?>
+                            <li class="nav-item">
+                                <a href="book-appointment.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='book-appointment'){echo 'active';} ?>">
+                                    <i class="far fa-circle nav-icon"></i><p>Book Appointment</p>
+                                </a>
+                            </li>
+                        <?php } ?>
                         <li class="nav-item">
                             <a href="appointment-history.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='appointment-history'){echo 'active';} ?>">
                                 <i class="far fa-circle nav-icon"></i><p>Appointment History</p>
