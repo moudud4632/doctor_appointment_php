@@ -6,32 +6,17 @@
     check_session();
     if(isset($_POST['submit'])) {
         $con = connection();
-        $ret=mysqli_query($con,"SELECT * FROM users WHERE email='".$_POST['username']."' and password='".md5($_POST['password'])."'");
+        $ret=mysqli_query($con,"SELECT * FROM users WHERE email='".$_POST['username']."'");
         $num=mysqli_fetch_array($ret);
         if($num>0) {
-            $extra="dashboard.php";//
-            $_SESSION['login']=$_POST['username'];
-            $_SESSION['id']=$num['id'];
+            $extra="login.php";
             $host=$_SERVER['HTTP_HOST'];
             $uip=$_SERVER['REMOTE_ADDR'];
-            $status=1;
-            // For stroing log if user login successfull
-//            $log=mysqli_query($con,"insert into userlog(uid,username,userip,status) values('".$_SESSION['id']."','".$_SESSION['login']."','$uip','$status')");
             $uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
             header("location:http://$host$uri/$extra");
             exit();
         }else{
-            // For stroing log if user login unsuccessfull
-            $_SESSION['login']='';
-            $uip=$_SERVER['REMOTE_ADDR'];
-            $status=0;
-//            mysqli_query($con,"insert into userlog(username,userip,status) values('".$_POST['username']."','$uip','$status')");
-            $_SESSION['errmsg']="Invalid username or password";
-            $extra="login.php";
-            $host  = $_SERVER['HTTP_HOST'];
-            $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
-            header("location:http://$host$uri/$extra");
-            exit();
+
         }
     }
 ?>
@@ -101,23 +86,16 @@
                         <input type="password" name="password" class="form-control" placeholder="Password">
                     </div>
                     <div class="row">
-                        <div class="col-8">
-                            <div class="icheck-primary">
-                                <input type="checkbox" id="remember">
-                                <label for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
-                        </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" name="submit" class="btn btn-primary btn-block">Sign Up</button>
                         </div>
                         <!-- /.col -->
                     </div>
                 </form>
+
                 <p class="mb-0">
-                    <a href="registration.php" class="text-center">Register as a new patient</a>
+                    <a href="login.php" class="text-center">Already have an account?</a>
                 </p>
             </div>
             <!-- /.login-card-body -->
