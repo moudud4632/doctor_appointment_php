@@ -61,7 +61,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="doctor-specilization.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
+                                <a href="doctor-specialization.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
                                     <i class="far fa-circle nav-icon"></i><p>Doctor Specialization</p>
                                 </a>
                             </li>
@@ -97,11 +97,13 @@
                         <i class="nav-icon fas fa-file"></i><p>Appointment<i class="fas fa-angle-left right"></i></p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="book-appointment.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='book-appointment'){echo 'active';} ?>">
-                                <i class="far fa-circle nav-icon"></i><p>Book Appointment</p>
-                            </a>
-                        </li>
+                        <?php if(isset($_SESSION['user_details']) && $_SESSION['user_details']['role']=='patient'){ ?>
+                            <li class="nav-item">
+                                <a href="book-appointment.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='book-appointment'){echo 'active';} ?>">
+                                    <i class="far fa-circle nav-icon"></i><p>Book Appointment</p>
+                                </a>
+                            </li>
+                        <?php } ?>
                         <li class="nav-item">
                             <a href="appointment-history.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='appointment-history'){echo 'active';} ?>">
                                 <i class="far fa-circle nav-icon"></i><p>Appointment History</p>
@@ -109,53 +111,29 @@
                         </li>
                     </ul>
                 </li>
-                <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=="patient"){ ?>
-                    <li class="nav-item">
-                        <a href="medical-history.php" class="nav-link" <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='medical-history'){echo 'active';} ?>>
-                            <i class="nav-icon fas fa-file"></i><p>Medical History</p>
-                        </a>
-                    </li>
-                <?php } ?>
                 <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=="admin"){ ?>
                     <li class="nav-item">
-                        <a href="between-dates-reports.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='between-dates-reports'){echo 'active';} ?>">
-                            <i class="nav-icon fas fa-file"></i><p>B/w dates reports</p>
+                        <a href="contact-us-queries.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='contact-us-queries'){echo 'active';} ?>">
+                            <i class="nav-icon fas fa-info-circle"></i><p>Contact us Queries</p>
                         </a>
                     </li>
-                    <li class="nav-item <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='unread-queries' || $_SESSION['active_menu']=='read-query'){echo 'menu-open';} ?>">
-                        <a href="#" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='unread-queries' || $_SESSION['active_menu']=='read-query'){echo 'active';} ?>">
-                            <i class="nav-icon fas fa-file"></i><p>Contact us Queries<i class="fas fa-angle-left right"></i></p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="unread-queries.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='unread-queries'){echo 'active';} ?>">
-                                    <i class="far fa-circle nav-icon"></i><p>Unread Query</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="read-query.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='read-query'){echo 'active';} ?>">
-                                    <i class="far fa-circle nav-icon"></i><p>Read Query</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs' || $_SESSION['active_menu']=='user-logs'){echo 'menu-open';} ?>">
-                        <a href="#" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs' || $_SESSION['active_menu']=='user-logs'){echo 'active';} ?>">
-                            <i class="nav-icon fas fa-record-vinyl"></i><p>Session Logs<i class="fas fa-angle-left right"></i></p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="doctor-logs.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs'){echo 'active';} ?>">
-                                    <i class="far fa-circle nav-icon"></i><p>Doctors</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="user-logs.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='user-logs.php'){echo 'active';} ?>">
-                                    <i class="far fa-circle nav-icon"></i><p>Users</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+<!--                    <li class="nav-item --><?php //if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs' || $_SESSION['active_menu']=='user-logs'){echo 'menu-open';} ?><!--">-->
+<!--                        <a href="#" class="nav-link --><?php //if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs' || $_SESSION['active_menu']=='user-logs'){echo 'active';} ?><!--">-->
+<!--                            <i class="nav-icon fas fa-record-vinyl"></i><p>Session Logs<i class="fas fa-angle-left right"></i></p>-->
+<!--                        </a>-->
+<!--                        <ul class="nav nav-treeview">-->
+<!--                            <li class="nav-item">-->
+<!--                                <a href="doctor-logs.php" class="nav-link --><?php //if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-logs'){echo 'active';} ?><!--">-->
+<!--                                    <i class="far fa-circle nav-icon"></i><p>Doctors</p>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                            <li class="nav-item">-->
+<!--                                <a href="user-logs.php" class="nav-link --><?php //if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='user-logs.php'){echo 'active';} ?><!--">-->
+<!--                                    <i class="far fa-circle nav-icon"></i><p>Users</p>-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
                 <?php } ?>
             </ul>
         </nav>

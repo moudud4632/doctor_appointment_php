@@ -21,7 +21,9 @@ if(isset($_POST['submit']))
     if($sql)
     {
         echo "<script>alert('Admin info updated Successfully');</script>";
-        header('location:manage-patient.php');
+        if(!isset($_GET['token']) && $_GET['token']!='profile'){
+            header('location:manage-patient.php');
+        }
     }
 }
 ?>
@@ -31,7 +33,7 @@ if(isset($_POST['submit']))
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit Admin</title>
+    <title>Edit Patient</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -61,12 +63,12 @@ if(isset($_POST['submit']))
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">View Admin</h1>
+                        <h1 class="m-0">Edit Patient</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item">View</li>
-                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage Admin</a></li>
+                            <li class="breadcrumb-item">Edit</li>
+                            <li class="breadcrumb-item"><a href="manage-patient.php">Manage Patient</a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>
@@ -158,7 +160,7 @@ if(isset($_POST['submit']))
 <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- AdminLTE App -->
+<!-- PatientLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>

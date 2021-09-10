@@ -7,9 +7,8 @@
         $mobileno=$_POST['mobileno'];
         $description=$_POST['description'];
         $conn = connection();
-        $query=mysqli_query($conn, "insert into tblcontactus(fullname,email,contactno,message) value('$name','$email','$mobileno','$description')");
+        $query=mysqli_query($conn, "insert into tblcontactus(fullname,email,contactno,message) value('$name','$email','$mobileno', '$description')");
         echo "<script>alert('Information successfully submitted');</script>";
-        echo "<script>window.location.href ='contact.php'</script>";
     }
 ?>
 <!DOCTYPE HTML>
