@@ -9,6 +9,24 @@ $con = connection();
 $result = mysqli_query($con,"select * from users where id = '".$_GET['id']."'");
 $details = mysqli_fetch_array($result);
 $_SESSION['active_menu']='manage-'.$details['role'];
+
+if($details['role']=='patient'){
+    if(isset($_POST['submit']))
+    {
+        $patient_id=$_GET['id'];
+        $blood_pressure=$_POST['blood_pressure'];
+        $blood_sugar=$_POST['blood_sugar'];
+        $weight=$_POST['weight'];
+        $temperature=$_POST['temperature'];
+        $medical_pres=$_POST['medical_pres'];
+        $query = mysqli_query($con, "insert into medical_history(patient_id, blood_pressure, blood_sugar, weight, temperature, medical_pres)value('$patient_id', '$blood_pressure', '$blood_sugar', '$weight', '$temperature', '$medical_pres')");
+        if($query) {
+            echo '<script>alert("Medical history has been added.")</script>';
+        }else{
+            echo '<script>alert("Something Went Wrong. Please try again")</script>';
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +34,7 @@ $_SESSION['active_menu']='manage-'.$details['role'];
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View Admin</title>
+    <title>View <?php echo ucfirst($details['role']); ?></title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -46,12 +64,12 @@ $_SESSION['active_menu']='manage-'.$details['role'];
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">View Admin</h1>
+                        <h1 class="m-0">View <?php echo ucfirst($details['role']); ?></h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">View</li>
-                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage Admin</a></li>
+                            <li class="breadcrumb-item"><a href="manage-admin.php">Manage <?php echo ucfirst($details['role']); ?></a></li>
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active"><?php echo ucfirst($_SESSION['user_details']['role']); ?></li>
                         </ol>
@@ -69,7 +87,7 @@ $_SESSION['active_menu']='manage-'.$details['role'];
                     <div class="card-body">
                         <table border="1" class="table table-bordered">
                             <tr align="center">
-                                <td colspan="4" style="font-size:20px;color:blue">Details</td>
+                                <td colspan="4" style="font-size:20px;color:blue"><?php echo ucfirst($details['role']); ?> Details</td>
                             </tr>
                             <tr>
                                 <th>Name</th>
@@ -110,6 +128,83 @@ $_SESSION['active_menu']='manage-'.$details['role'];
                                 <td><?php  echo $details['updated_at'];?></td>
                             </tr>
                         </table>
+
+                        <?php if($details['role']=='patient'){ ?>
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <tr align="center">
+                                    <th colspan="8" >Medical History</th>
+                                </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Blood Pressure</th>
+                                    <th>Weight</th>
+                                    <th>Blood Sugar</th>
+                                    <th>Body Temperature</th>
+                                    <th>Medical Prescription</th>
+                                    <th>Visit Date</th>
+                                </tr>
+                                <?php
+                                    $cnt=1;
+                                    $pid = $details['id'];
+                                    $ret = mysqli_query($con, "select * from medical_history  where patient_id='$pid'");
+                                    while ($row=mysqli_fetch_array($ret)) {
+                                ?>
+                                    <tr>
+                                        <td><?php echo $cnt;?></td>
+                                        <td><?php  echo $row['blood_pressure'];?></td>
+                                        <td><?php  echo $row['weight'];?></td>
+                                        <td><?php  echo $row['blood_sugar'];?></td>
+                                        <td><?php  echo $row['temperature'];?></td>
+                                        <td><?php  echo $row['medical_pres'];?></td>
+                                        <td><?php  echo $row['created_at'];?></td>
+                                    </tr>
+                                <?php $cnt=$cnt+1;} ?>
+                            </table>
+                            <br/>
+                            <p align="center"><button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal">Add Medical History</button></p>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add Medical History</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="post" name="submit">
+                                            <div class="modal-body">
+                                                <table class="table table-bordered table-hover data-tables">
+                                                    <tr>
+                                                        <th class="p-0 m-0">Blood Pressure:</th>
+                                                        <td class="p-0 m-0"><input name="blood_pressure" placeholder="Blood Pressure" class="form-control wd-450" required=""></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="p-0 m-0">Blood Sugar:</th>
+                                                        <td class="p-0 m-0"><input name="blood_sugar" placeholder="Blood Sugar" class="form-control wd-450" required=""></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="p-0 m-0">Weight:</th>
+                                                        <td class="p-0 m-0"><input name="weight" placeholder="Weight" class="form-control wd-450" required=""></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="p-0 m-0">Body Temperature:</th>
+                                                        <td class="p-0 m-0"><input name="temperature" placeholder="Body Temperature" class="form-control wd-450" required=""></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="p-0 m-0">Medical Prescription:</th>
+                                                        <td class="p-0 m-0"><textarea name="medical_pres" placeholder="Medical Prescription" rows="12" cols="14" class="form-control wd-450" required=""></textarea></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
                     <!-- /.card-body -->
                 </div>

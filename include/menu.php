@@ -61,7 +61,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="doctor-specilization.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
+                                <a href="doctor-specialization.php" class="nav-link <?php if(isset($_SESSION['active_menu']) && $_SESSION['active_menu']=='doctor-specilization'){echo 'active';} ?>">
                                     <i class="far fa-circle nav-icon"></i><p>Doctor Specialization</p>
                                 </a>
                             </li>
