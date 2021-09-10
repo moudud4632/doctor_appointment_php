@@ -5,7 +5,7 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 $_SESSION['user_details']=user_details();
-$_SESSION['active_menu']='manage-patient';
+$_SESSION['active_menu']='appointment-history';
 $con = connection();
 if(isset($_GET['del']))
 {
@@ -67,22 +67,22 @@ if(isset($_GET['del']))
             <div class="container-fluid">
                 <div class="card">
                     <!-- /.card-header -->
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <?php if(isset($_GET['id']) && $_SESSION['id']){ ?><div class="alert alert-success">Successfully doctor deleted!</div><?php } ?>
                         <table class="table table-hover" id="datatable">
                             <thead>
                             <tr>
-                                <th>#</th>
-                                <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='patent'){ ?>
+                                <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='patient'){ ?>
                                     <th>Doctor</th>
                                     <th>Doctor Phone</th>
+                                    <th>Specialization</th>
                                 <?php } ?>
-                                <th>Specialization</th>
-                                <th>Consultancy Fee</th>
                                 <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='doctor'){ ?>
                                     <th>Patient</th>
                                     <th>Patient Phone</th>
+                                    <th>Consultancy Fee</th>
                                 <?php } ?>
+                                <th>Symptoms</th>
                                 <th>Appointment</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -91,7 +91,7 @@ if(isset($_GET['del']))
                             <tbody>
                             <?php
                                 if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin'){
-                                    $sql=mysqli_query($con,"select *, doctor.*, patient.* from appointment join users as doctor on appointment.doctor_id==users.id");
+                                    $sql=mysqli_query($con,"select * from appointment");
                                 }else if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='doctor'){
                                     $sql=mysqli_query($con,"select * from appointment where doctor_id='".$_SESSION['user_details']['id']."'");
                                 }else{
@@ -102,11 +102,29 @@ if(isset($_GET['del']))
                                 {
                             ?>
                                 <tr>
-                                    <td class="p-0 m-0"><?php echo $cnt;?></td>
-                                    <td class="p-0 m-0"><?php echo $row['fullName'];?></td>
-                                    <td class="p-0 m-0"><?php echo $row['mobile_number'];?></td>
-                                    <td class="p-0 m-0"><?php echo $row['email'];?></td>
-                                    <td class="p-0 m-0"><?php echo ucfirst($row['gender']);?></td>
+                                    <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='patient'){ ?>
+                                        <?php
+                                            $doctor_id = $row['doctor_id'];
+                                            $doctor=mysqli_query($con,"select * from users where id='$doctor_id'");
+                                            $doctor_row=mysqli_fetch_array($doctor);
+                                        ?>
+                                        <td><?php echo $doctor_row['fullName']; ?></td>
+                                        <td><?php echo $doctor_row['mobile_number']; ?></td>
+                                        <td><?php echo $row['doctor_specialization']; ?></td>
+                                    <?php } ?>
+                                    <?php if(isset($_SESSION['user_details']['role']) && $_SESSION['user_details']['role']=='admin' || $_SESSION['user_details']['role']=='doctor'){ ?>
+                                        <?php
+                                        $patient_id = $row['patient_id'];
+                                        $patient=mysqli_query($con,"select * from users where id='$patient_id'");
+                                        $patient_row=mysqli_fetch_array($patient);
+                                        ?>
+                                        <td><?php echo $patient_row['fullName']; ?></td>
+                                        <td><?php echo $patient_row['mobile_number']; ?></td>
+                                        <td><?php echo $row['fees']; ?></td>
+                                    <?php } ?>
+                                    <td><?php echo $row['symptoms']; ?></td>
+                                    <td><?php echo $row['appointment_datetime']; ?></td>
+                                    <td><?php echo ucfirst($row['status']); ?></td>
                                     <td class="p-0 m-0">
                                         <a href="view.php?id=<?php echo $row['id']?>" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                                         <a href="edit-patient.php?id=<?php echo $row['id']?>" onClick="return confirm('Are you sure you want to edit?')" class="btn btn-primary btn-sm"><i class="fa fa-user-edit"></i></a>
@@ -114,9 +132,7 @@ if(isset($_GET['del']))
                                     </td>
                                 </tr>
 
-                                <?php
-                                $cnt=$cnt+1;
-                            }?>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
