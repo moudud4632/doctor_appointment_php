@@ -15,11 +15,14 @@ if(isset($_POST['submit']))
     $patient_id=$_SESSION['user_details']['id'];
     $fees=$_POST['fees'];
     $symptoms=$_POST['symptoms'];
-    $appointment_datetime=$_POST['appointment_datetime'];
-    $query=mysqli_query($con,"insert into appointment(doctor_specialization, doctor_id, patient_id, fees, symptoms, appointment_datetime) values('$doctor_specialization', '$doctor_id', '$patient_id', '$fees', '$symptoms', '$appointment_datetime')");
+    $appointment_date=$_POST['appointment_date'];
+    $appointment_time_slot=$_POST['appointment_time_slot'];
+    $query=mysqli_query($con,"insert into appointment(doctor_specialization, doctor_id, patient_id, fees, symptoms, appointment_date, appointment_time_slot) values('$doctor_specialization', '$doctor_id', '$patient_id', '$fees', '$symptoms', '$appointment_date', '$appointment_time_slot')");
     if($query){
         echo "<script>alert('Your appointment successfully booked');</script>";
         header('location: appointment-history.php');
+    }else{
+        echo "<script>alert('Execution Failed.');</script>";
     }
 }
 ?>
