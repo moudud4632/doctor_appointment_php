@@ -113,6 +113,8 @@ if(isset($_POST['submit']))
                                 <th>Symptoms</th>
                                 <th>Date</th>
                                 <th>Slot</th>
+                                <th>Payment Method</th>
+                                <th>Transaction No.</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -154,6 +156,8 @@ if(isset($_POST['submit']))
                                     <td class="p-0 m-0"><?php echo $row['symptoms']; ?></td>
                                     <td class="p-0 m-0"><?php echo $row['appointment_date']; ?></td>
                                     <td class="p-0 m-0"><?php echo $row['appointment_time_slot']; ?></td>
+                                    <td class="p-0 m-0"><?php echo $row['payment_method']; ?></td>
+                                    <td class="p-0 m-0"><?php echo $row['transaction_no']; ?></td>
                                     <td class="p-0 m-0"><?php if($row['status']=='pending'){echo '<span class="badge badge-warning">Pending</span>';}else if($row['status']=='link_shared'){ echo '<span class="badge badge-primary">Schedule Confirmed</span>';}else if($row['status']=='done'){ echo '<span class="badge badge-success">Done</span>';}else{ echo '<span class="badge badge-danger">Canceled</span>';}; ?></td>
                                     <td class="p-0 m-0">
                                         <?php if($row['status']=='pending' || $row['status']=='link_shared'){ ?>
