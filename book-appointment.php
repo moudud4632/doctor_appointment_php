@@ -17,7 +17,9 @@ if(isset($_POST['submit']))
     $symptoms=$_POST['symptoms'];
     $appointment_date=$_POST['appointment_date'];
     $appointment_time_slot=$_POST['appointment_time_slot'];
-    $query=mysqli_query($con,"insert into appointment(doctor_specialization, doctor_id, patient_id, fees, symptoms, appointment_date, appointment_time_slot) values('$doctor_specialization', '$doctor_id', '$patient_id', '$fees', '$symptoms', '$appointment_date', '$appointment_time_slot')");
+    $payment_method=$_POST['payment_method'];
+    $transaction_no=$_POST['transaction_no'];
+    $query=mysqli_query($con,"insert into appointment(doctor_specialization, doctor_id, patient_id, fees, symptoms, appointment_date, appointment_time_slot, payment_method, transaction_no) values('$doctor_specialization', '$doctor_id', '$patient_id', '$fees', '$symptoms', '$appointment_date', '$appointment_time_slot', '$payment_method', '$transaction_no')");
     if($query){
         echo "<script>alert('Your appointment successfully booked');</script>";
         header('location: appointment-history.php');
@@ -102,7 +104,7 @@ if(isset($_POST['submit']))
                             </div>
                             <div class="form-group">
                                 <label>Consultancy Fees</label>
-                                <input type="text" class="form-control" id="fees" name="fees"  required="">
+                                <input type="text" class="form-control" id="fees" name="fees" readonly required="">
                             </div>
                             <div class="form-group">
                                 <label>Symptoms</label>
@@ -120,6 +122,21 @@ if(isset($_POST['submit']))
                                     <option value="3:00PM - 5:00PM">3:00PM - 5:00PM</option>
                                     <option value="8:00PM - 11:00PM">8:00PM - 11:00PM</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Payment Methods</label>
+                                <select name="payment_method" class="form-control" required="">
+                                    <option value="">Select payment methods</option>
+                                    <option value="DBBL">DBBL</option>
+                                    <option value="IBBL">IBBL</option>
+                                    <option value="Bkash">Bkash</option>
+                                    <option value="Rocket">Rocket</option>
+                                    <option value="Nagod">Nagod</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Transaction Number</label>
+                                <input type="text" class="form-control" name="transaction_no" required=""/>
                             </div>
                             <button type="submit" name="submit" class="btn btn-o btn-primary">Submit</button>
                         </form>

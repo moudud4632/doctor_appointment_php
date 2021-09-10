@@ -2,7 +2,7 @@
     function connection(){
         define('DB_SERVER','localhost');
         define('DB_USER','root');
-        define('DB_PASS' ,'@Moudud123');
+        define('DB_PASS' ,'');
         define('DB_NAME', 'doctor_appointment');
         $connection = mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME);
         // Check connection
@@ -15,10 +15,10 @@
 
     function app($token){
         $data = [
-            'name' => "Doctors Appointment & Blood Bank",
-            'short_name' => "HMS ERP",
-            'developer' => "Moudud Ahamed",
-            'developer_url' => "https://e3techno.com",
+            'name' => "Care",
+            'short_name' => "Care",
+            'developer' => "Team Care",
+            'developer_url' => "https://teamcare.com",
         ];
         if($token){
             return $data[$token];
