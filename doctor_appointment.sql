@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 10, 2021 at 04:00 PM
+-- Generation Time: Sep 10, 2021 at 06:14 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -38,11 +38,13 @@ CREATE TABLE IF NOT EXISTS `appointment` (
   `appointment_date` date NOT NULL,
   `appointment_time_slot` varchar(191) NOT NULL,
   `meeting_info` longtext,
+  `payment_method` varchar(100) DEFAULT NULL,
+  `transaction_no` varchar(191) DEFAULT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -62,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `medical_history` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -77,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `specialization` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `specialization`
@@ -112,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `tblcontactus` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -138,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -147,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `specialization`, `fees`, `fullName`, `address`, `city`, `gender`, `email`, `mobile_number`, `age`, `password`, `role`, `created_at`, `updated_at`) VALUES
 (2, NULL, NULL, 'Mr. Admin', 'New Delhi', 'New Delhi', 'male', 'admin@gmail.com', '01767508661', 22, '25f9e794323b453885f5181f1b624d0b', 'admin', '2017-01-07 06:36:53', '2021-09-10 15:58:01'),
 (3, 'Gynecologist/Obstetrician', 200, 'Mr. Doctor', 'New Delhi', 'New delhi', 'male', 'doctor@gmail.com', '01767508662', 25, '25f9e794323b453885f5181f1b624d0b', 'doctor', '2017-01-07 06:36:53', '2021-09-10 15:59:30'),
-(4, NULL, NULL, 'Mr. patient', 'New Delhi', 'New delhi', 'male', 'patient@gmail.com', '01767508661', 30, '25f9e794323b453885f5181f1b624d0b', 'patient', '2017-01-07 07:41:14', '2021-09-10 16:00:04');
+(4, NULL, NULL, 'Mr. patient', 'New Delhi', 'New delhi', 'male', 'patient@gmail.com', '01786948694', 30, '25f9e794323b453885f5181f1b624d0b', 'patient', '2017-01-07 07:41:14', '2021-09-10 17:15:37');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
